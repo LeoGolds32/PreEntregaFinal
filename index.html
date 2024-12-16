@@ -1,0 +1,89 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador de Tareas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input, button {
+            margin: 5px;
+            padding: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 5px;
+            padding: 10px;
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Administrador de Tareas</h1>
+    <input type="text" id="taskInput" placeholder="Ingresa una nueva tarea">
+    <button onclick="addTask()">Agregar Tarea</button>
+    <button onclick="filterTasks()">Filtrar Tareas</button>
+
+    <h2>Lista de Tareas</h2>
+    <ul id="taskList"></ul>
+
+    <script>
+        // Variables necesarias
+        let tasks = [];
+        let idCounter = 1;
+
+        // Funciones esenciales
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskName = taskInput.value.trim();
+
+            if (taskName) {
+                // Crear objeto de tarea
+                const task = {
+                    id: idCounter++,
+                    name: taskName,
+                    completed: false
+                };
+                
+                // Agregar tarea al array
+                tasks.push(task);
+                taskInput.value = '';
+                displayTasks();
+            } else {
+                alert('Por favor ingresa una tarea.');
+            }
+        }
+
+        function displayTasks() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+
+            // Mostrar cada tarea en la lista
+            tasks.forEach(task => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `${task.id}. ${task.name} 
+                    <button onclick="deleteTask(${task.id})">Eliminar</button>`;
+                taskList.appendChild(listItem);
+            });
+        }
+
+        function deleteTask(id) {
+            // Filtrar el array para eliminar la tarea con el ID indicado
+            tasks = tasks.filter(task => task.id !== id);
+            displayTasks();
+        }
+
+        function filterTasks() {
+            const filteredTasks = tasks.filter(task => !task.completed);
+            console.log("Tareas pendientes:", filteredTasks);
+            alert("Mira la consola para ver las tareas pendientes.");
+        }
+    </script>
+</body>
+</html>
